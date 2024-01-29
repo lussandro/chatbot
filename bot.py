@@ -4,7 +4,14 @@ from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 
 app = Flask(__name__)
-chatbot = ChatBot("MeuChatBot")
+nlp = spacy.load('pt_core_news_sm')
+
+chatbot = ChatBot(
+    "MeuChatBot",
+    storage_adapter='chatterbot.storage.SQLStorageAdapter',
+    database_uri='sqlite:///database.sqlite3',
+    tagger_language='pt'  # Definir o idioma para português
+)
 @app.route('/webhook', methods=['POST'])
 def webhook():
     # Recebe os dados do webhook
@@ -22,4 +29,4 @@ def webhook():
     return jsonify({"response": str(response)}), 200
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(host='0.0.0.0',port=5000, debug=True)
