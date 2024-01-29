@@ -1,14 +1,14 @@
 from flask import Flask, request, jsonify
 import spacy
 from chatterbot import ChatBot
-# from spacy.cli import download
+from spacy.cli import download
 
-# download("en_core_web_sm")
+download("en_core_web_sm")
 
-# class ENGSM:
-#     ISO_639_1 = 'en_core_web_sm'
+class ENGSM:
+    ISO_639_1 = 'en_core_web_sm'
 
-# app = Flask(__name__)
+app = Flask(__name__)
 
 # Carregar o modelo de linguagem do spaCy para português
 
