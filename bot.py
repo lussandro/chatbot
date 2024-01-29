@@ -1,18 +1,21 @@
 from flask import Flask, request, jsonify
 import spacy
 from chatterbot import ChatBot
-from chatterbot.trainers import ChatterBotCorpusTrainer
+from spacy.cli import download
+
+download("en_core_web_sm")
+
+class ENGSM:
+    ISO_639_1 = 'en_core_web_sm'
 
 app = Flask(__name__)
 
 # Carregar o modelo de linguagem do spaCy para português
-nlp = spacy.blank('pt')
+
 
 chatbot = ChatBot(
     "MeuChatBot",
-    storage_adapter='chatterbot.storage.SQLStorageAdapter',
-    database_uri='sqlite:///database.sqlite3'
-    # Removendo a configuração do idioma e o tagger
+    tagger_language=ENGSM
 )
 
 @app.route('/webhook', methods=['POST'])

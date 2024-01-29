@@ -1,17 +1,18 @@
 import spacy
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
+from spacy.cli import download
 
-# Carregar o modelo de linguagem do spaCy para português
-nlp = spacy.load('pt_core_news_sm')
+download("en_core_web_sm")
+
+class ENGSM:
+    ISO_639_1 = 'en_core_web_sm'
+
 
 chatbot = ChatBot(
     "MeuChatBot",
-    storage_adapter='chatterbot.storage.SQLStorageAdapter',
-    database_uri='sqlite:///database.sqlite3',
-    tagger_language=nlp  # Definir o idioma para português
+    tagger_language=ENGSM
 )
-
 # Resto do seu código...
 
 trainer = ChatterBotCorpusTrainer(chatbot)
