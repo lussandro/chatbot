@@ -5,8 +5,8 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 
 app = Flask(__name__)
 
-# Carregar o modelo de linguagem do spaCy para português
-nlp = spacy.load('pt_core_news_sm')
+# Criar um modelo em branco do spaCy para o português
+nlp = spacy.blank('pt')
 
 chatbot = ChatBot(
     "MeuChatBot",
@@ -31,4 +31,4 @@ def webhook():
     return jsonify({"response": str(response)}), 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
