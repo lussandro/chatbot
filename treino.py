@@ -9,4 +9,4 @@ trainer = ChatterBotCorpusTrainer(chatbot)
 
 # Aqui, você precisará especificar o caminho para os arquivos baixados
 # Por exemplo: 'Caminho/para/o/arquivo/portuguese/conversations.yml'
-trainer.train("Caminho/para/o/diretório/portuguese/")
+trainer.train("/root/chatbot/")
