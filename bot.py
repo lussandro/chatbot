@@ -22,7 +22,7 @@ chatbot = ChatBot(
 def webhook():
     # Recebe os dados do webhook
     data = request.json
-
+    
     # Extrai os dados específicos
     remote_jid = data['data']['key']['remoteJid'].split('@')[0]
     push_name = data['data']['pushName']
@@ -30,7 +30,7 @@ def webhook():
     sender = data['sender'].split('@')[0]
 
     response = chatbot.get_response(message)
-    
+    print("Resposta do ChatterBot:", response) 
     return jsonify({"response": str(response)}), 200
 
 if __name__ == '__main__':
