@@ -5,14 +5,14 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 
 app = Flask(__name__)
 
-# Criar um modelo em branco do spaCy para o português
+# Carregar o modelo de linguagem do spaCy para português
 nlp = spacy.blank('pt')
 
 chatbot = ChatBot(
     "MeuChatBot",
     storage_adapter='chatterbot.storage.SQLStorageAdapter',
-    database_uri='sqlite:///database.sqlite3',
-    tagger=nlp  # Passar o objeto nlp diretamente
+    database_uri='sqlite:///database.sqlite3'
+    # Removendo a configuração do idioma e o tagger
 )
 
 @app.route('/webhook', methods=['POST'])
