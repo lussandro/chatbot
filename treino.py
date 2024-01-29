@@ -1,8 +1,11 @@
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 
-# Criação do ChatBot
-chatbot = ChatBot("MeuChatBot")
+chatbot = ChatBot(
+    "MeuChatBot",
+    tagger_language="en_core_web_sm"  # Usar o nome completo do modelo spaCy
+)
+
 
 # Treinamento do ChatBot
 trainer = ChatterBotCorpusTrainer(chatbot)
