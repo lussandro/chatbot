@@ -4,6 +4,7 @@ from chatterbot import ChatBot
 import json
 from spacy.cli import download
 import requests
+from time import sleep
 
 download("en_core_web_sm")
 
@@ -33,7 +34,7 @@ def webhook():
     sender = data['sender'].split('@')[0]
 
     response = chatbot.get_response(message)
-
+    sleep(5)
     enviar_mensagem(remote_jid, response)
     print("Resposta do ChatterBot:", response) 
     return jsonify({"response": str(response)}), 200
