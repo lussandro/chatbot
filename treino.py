@@ -3,8 +3,12 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 
 chatbot = ChatBot(
     "MeuChatBot",
-    tagger_language="en_core_web_sm"  # Usar o nome completo do modelo spaCy
+    storage_adapter='chatterbot.storage.SQLStorageAdapter',
+    database_uri='sqlite:///database.sqlite3',
+    tagger_language='pt_core_news_sm'  # ou 'en_core_web_sm' para inglês
 )
+
+# Resto do seu código de treinamento...
 
 
 # Treinamento do ChatBot
