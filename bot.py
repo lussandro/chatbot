@@ -4,16 +4,25 @@ app = Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    # Aqui você recebe os dados do webhook
+    # Recebe os dados do webhook
     data = request.json
-
-    # Exibe os dados recebidos no console do servidor
     print("Dados recebidos:", data)
 
-    # Aqui você pode processar os dados e retornar uma resposta
-    # Por enquanto, vamos apenas retornar um status de sucesso
-    return jsonify({"status": "Recebido com sucesso"}), 200
+    # Extrai os dados específicos
+    remote_jid = data['data']['key']['remoteJid'].split('@')[0]
+    push_name = data['data']['pushName']
+    message = data['data']['message']['conversation']
+    sender = data['sender'].split('@')[0]
+
+    # Retorna os dados extraídos
+    extracted_data = {
+        "remote_jid": remote_jid,
+        "push_name": push_name,
+        "message": message,
+        "sender": sender
+    }
+
+    return jsonify(extracted_data), 200
 
 if __name__ == '__main__':
-    # Inicia o servidor na porta 5000
-    app.run(host='0.0.0.0',port=5000, debug=True)
+    app.run(port=5000, debug=True)
