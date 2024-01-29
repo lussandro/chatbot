@@ -4,19 +4,21 @@ from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 
 app = Flask(__name__)
+
+# Carregar o modelo de linguagem do spaCy para português
 nlp = spacy.load('pt_core_news_sm')
 
 chatbot = ChatBot(
     "MeuChatBot",
     storage_adapter='chatterbot.storage.SQLStorageAdapter',
     database_uri='sqlite:///database.sqlite3',
-    tagger_language='pt'  # Definir o idioma para português
+    tagger=nlp  # Passar o objeto nlp diretamente
 )
+
 @app.route('/webhook', methods=['POST'])
 def webhook():
     # Recebe os dados do webhook
     data = request.json
-    #print("Dados recebidos:", data)
 
     # Extrai os dados específicos
     remote_jid = data['data']['key']['remoteJid'].split('@')[0]
