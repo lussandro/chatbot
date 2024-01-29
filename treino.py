@@ -18,4 +18,4 @@ chatbot = ChatBot(
 trainer = ChatterBotCorpusTrainer(chatbot)
 
 
-trainer.train("/root/chatbot/yml/greetings.yml")
+trainer.train("/root/chatbot/yml/")
