@@ -6,7 +6,7 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 app = Flask(__name__)
 
 # Criar um modelo em branco do spaCy para o português
-nlp = spacy.blank('en_core_web_sm')
+nlp = spacy.blank('pt')
 
 chatbot = ChatBot(
     "MeuChatBot",
