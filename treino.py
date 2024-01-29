@@ -1,14 +1,18 @@
+import spacy
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
+
+# Carregar o modelo de linguagem do spaCy
+nlp = spacy.load('pt_core_news_sm')
 
 chatbot = ChatBot(
     "MeuChatBot",
     storage_adapter='chatterbot.storage.SQLStorageAdapter',
     database_uri='sqlite:///database.sqlite3',
-    tagger_language='pt_core_news_sm'  # ou 'en_core_web_sm' para inglês
+    tagger=nlp  # Passar o objeto nlp diretamente
 )
 
-# Resto do seu código de treinamento...
+# Resto do seu código...
 
 
 # Treinamento do ChatBot
