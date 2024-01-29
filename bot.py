@@ -43,7 +43,7 @@ def enviar_mensagem(telefone, texto):
     url = 'https://api.chatcoreapi.io/message/sendText/chatcore'
     payload = {
         'number': telefone,
-        'textMessage': {'text': texto},
+        'textMessage': {'text': str(texto)},
         'options': {
             'delay': 0,
             'presence': 'composing',
