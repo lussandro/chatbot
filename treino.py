@@ -2,6 +2,7 @@ import spacy
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from spacy.cli import download
+import yaml
 
 download("en_core_web_sm")
 
