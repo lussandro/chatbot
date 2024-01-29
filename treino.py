@@ -9,7 +9,7 @@ chatbot = ChatBot(
     "MeuChatBot",
     storage_adapter='chatterbot.storage.SQLStorageAdapter',
     database_uri='sqlite:///database.sqlite3',
-    tagger_language='pt'  # Definir o idioma para português
+    tagger_language=nlp  # Definir o idioma para português
 )
 
 # Resto do seu código...
