@@ -20,8 +20,7 @@ chatbot = ChatBot(
     tagger_language=ENGSM
 )
 def enviar_mensagem(telefone, texto):
-    configuracao = Configuracao.query.filter_by(empresa_id=current_user.empresa_id).first()
-    instancia = configuracao.instancia_whatsapp
+
 
     url = 'https://api.chatcoreapi.io/message/sendText/chatcore'
     payload = {
