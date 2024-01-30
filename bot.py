@@ -5,7 +5,7 @@ import json
 from spacy.cli import download
 import requests
 from time import sleep
-
+ instancia = 'chatcore'
 download("en_core_web_sm")
 
 class ENGSM:
@@ -62,7 +62,7 @@ def enviar_mensagem(telefone, texto, sender):
     return response.ok
 @app.route('/capturagrupos', methods=['GET'])
 def captura_grupos(instancia):
-    instancia = 'chatcore'
+   
 
     url = 'https://api.chatcoreapi.io/group/fetchAllGroups/'+ instancia +'?getParticipants=false'
   
