@@ -5,7 +5,7 @@ import json
 from spacy.cli import download
 import requests
 from time import sleep
- instancia = 'chatcore'
+instancia = 'chatcore'
 download("en_core_web_sm")
 
 class ENGSM:
