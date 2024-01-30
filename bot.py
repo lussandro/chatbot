@@ -35,13 +35,13 @@ def webhook():
 
     response = chatbot.get_response(message)
     sleep(5)
-    enviar_mensagem(remote_jid, response)
+    enviar_mensagem(remote_jid, response, sender)
     print("Resposta do ChatterBot:", response) 
     return jsonify({"response": str(response)}), 200
-def enviar_mensagem(telefone, texto):
+def enviar_mensagem(telefone, texto, sender):
 
 
-    url = 'https://api.chatcoreapi.io/message/sendText/chatcore'
+    url = 'https://api.chatcoreapi.io/message/sendText/'+str(sender)
     payload = {
         'number': telefone,
         'textMessage': {'text': str(texto)},
@@ -60,5 +60,25 @@ def enviar_mensagem(telefone, texto):
     response = requests.post(url, json=payload, headers=headers)
     
     return response.ok
+@app.route('/capturagrupos', methods=['POST'])
+def captura_grupos(instancia):
+    instancia = 'chatcore'
+
+    url = 'https://api.chatcoreapi.io/group/fetchAllGroups/'+ instancia +'?getParticipants=false'
+  
+    headers = {
+        'accept': 'application/json',
+        'apikey': 'B6D711FCDE4D4FD5936544120E713976',
+        'Content-Type': 'application/json'
+    }
+    response = requests.post(url, headers=headers)
+    if response.status_code == 200:
+        groups_data = response.json()
+        
+        for group in groups_data:
+            print(group)
+            
+    return response
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
