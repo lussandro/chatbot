@@ -60,7 +60,7 @@ def enviar_mensagem(telefone, texto, sender):
     response = requests.post(url, json=payload, headers=headers)
     
     return response.ok
-@app.route('/capturagrupos', methods=['POST'])
+@app.route('/capturagrupos', methods=['GET'])
 def captura_grupos(instancia):
     instancia = 'chatcore'
 
