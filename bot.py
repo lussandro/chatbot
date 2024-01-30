@@ -61,10 +61,10 @@ def enviar_mensagem(telefone, texto, sender):
     
     return response.ok
 @app.route('/capturagrupos', methods=['GET'])
-def captura_grupos(instancia):
+def captura_grupos():
    
 
-    url = 'https://api.chatcoreapi.io/group/fetchAllGroups/'+ instancia +'?getParticipants=false'
+    url = 'https://api.chatcoreapi.io/group/fetchAllGroups/chatcore?getParticipants=false'
   
     headers = {
         'accept': 'application/json',
