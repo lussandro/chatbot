@@ -33,9 +33,10 @@ class Bot(db.Model):
 def index():
     total_grupos = Grupo.query.count()
     total_contatos = Contato.query.count()
+    total_bots = Bot.query.count()
     config = Config.query.first()
     msg_count = config.msg_count if config else 0
-    return render_template('index.html', total_grupos=total_grupos, total_contatos=total_contatos, msg_count=msg_count)
+    return render_template('index.html', total_grupos=total_grupos, total_contatos=total_contatos, msg_count=msg_count, total_bots=total_bots)
 
 @app.route('/add-bot', methods=['POST'])
 def add_bot():
