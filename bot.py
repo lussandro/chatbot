@@ -101,8 +101,8 @@ def fetch_groups():
                 db.session.add(novo_grupo)
         
         db.session.commit()
-        # return jsonify({"message": "Grupos atualizados com sucesso!"}), 200
-        return redirect(index.html)
+        return jsonify({"message": "Grupos atualizados com sucesso!"}), 200
+        
     else:
         return jsonify({"error": "Falha ao buscar grupos"}), response.status_code
 
