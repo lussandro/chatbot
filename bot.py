@@ -102,7 +102,7 @@ def fetch_groups():
         
         db.session.commit()
         # return jsonify({"message": "Grupos atualizados com sucesso!"}), 200
-        return redirect(url_for('/'))
+        return redirect(index.html)
     else:
         return jsonify({"error": "Falha ao buscar grupos"}), response.status_code
 
