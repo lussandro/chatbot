@@ -6,12 +6,21 @@ app = Flask(__name__)
 def webhook():
     # Recebendo os dados do webhook
     data = request.json
+    
+    # Extraindo os valores específicos
+    remote_jid = data['data']['key']['remoteJid']
+    message = data['data']['message']['conversation']
+    sender = data['sender']
 
-    # Aqui você pode adicionar o tratamento dos dados recebidos
-    print("Dados recebidos:", data)
+    # Imprimindo os valores
+    print("remoteJid:", remote_jid)
+    print("message:", message)
+    print("sender:", sender)
+
+    # Armazenando os valores (aqui você pode adicionar seu código de armazenamento)
 
     # Resposta de sucesso
-    return jsonify({"message": "Dados recebidos com sucesso!"}), 200
+    return jsonify({"message": "Dados recebidos e processados com sucesso!"}), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True, port=5000)
