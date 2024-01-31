@@ -67,10 +67,15 @@ def webhook():
     message = data['data']['message'].get('conversation')
     push_name = data['data']['pushName']
     sender = data['sender'].replace('@s.whatsapp.net', '')
-    webhook_logs.append("Dados Recebida")
-    webhook_logs.append(remote_jid)
-    webhook_logs.append(message)
+    webhook_data = {
+        "remote_jid": data['data']['key']['remoteJid'].replace('@s.whatsapp.net', ''),
+        "message": data['data']['message'].get('conversation'),
+        "push_name": data['data']['pushName'],
+        "sender": data['sender'].replace('@s.whatsapp.net', '')
+    }
 
+    # Adicione o dicionário à lista webhook_logs
+    webhook_logs.append(webhook_data)
     # Incrementar o contador de mensagens na tabela config
     if message:
         config = Config.query.first()
@@ -87,7 +92,7 @@ def webhook():
         novo_contato = Contato(numero=remote_jid, nome=push_name, instancia=sender)
         db.session.add(novo_contato)
     else:
-       webhook_logs.append("Contato já existe:", contato_existente.numero, contato_existente.nome, contato_existente.instancia)
+       print("Contato já existe:", contato_existente.numero, contato_existente.nome, contato_existente.instancia)
 
     db.session.commit()
     return jsonify({"message": "Dados recebidos e processados com sucesso!"}), 200
