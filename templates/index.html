@@ -50,10 +50,7 @@
                         <input type="text" class="form-control mb-2" id="botNome" placeholder="Nome do Bot">
                         <button type="button" class="btn btn-secondary btn-block" onclick="adicionarBot()">Adicionar</button>
                     </div>
-                    <div class="mt-4">
-                        <h5>Dados do Webhook</h5>
-                        <pre id="webhookLogs"></pre>
-                    </div>
+
                 </div>
             </div>
             <div class="col-md-9">
@@ -69,20 +66,7 @@
             </div>
         </div>
     </div>
-    <script>
-        // ...
-    
-        // Função para atualizar os dados do webhook no painel
-        function atualizarWebhookLogs() {
-            var webhookLogsElement = document.getElementById('webhookLogs');
-            webhookLogsElement.textContent = JSON.stringify(webhook_logs, null, 2); // Converte para JSON formatado
-        }
-    
-        // Chame a função inicialmente para exibir os dados existentes
-        atualizarWebhookLogs();
-    
-        // ...
-    </script>
+
     
     <script>
         var myChart;
