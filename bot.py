@@ -20,6 +20,12 @@ class Grupo(db.Model):
     id = db.Column(db.String(120), primary_key=True)
     subject = db.Column(db.String(120), nullable=False)
 
+@app.route('/')
+def index():
+    total_grupos = Grupo.query.count()
+    total_contatos = Contato.query.count()
+    return render_template('index.html', total_grupos=total_grupos, total_contatos=total_contatos)
+
 @app.route('/webhook', methods=['POST'])
 def webhook():
     data = request.json
