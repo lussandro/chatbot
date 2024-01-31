@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <style>
         .sidebar {
@@ -12,38 +12,38 @@
             border-radius: 0.25rem;
             padding: 20px;
             margin-bottom: 20px;
-            height: 100vh; /* Define a altura do painel para ocupar toda a altura da view */
+            height: calc(100vh - 50px); /* Altura ajustada para a altura da tela */
+            position: sticky;
+            top: 15px;
         }
         .chart-container {
             position: relative;
-            height: 60vh; /* Ajusta a altura do gráfico para 60% da altura da view */
+            margin-top: 20px;
+            height: 75vh;
         }
         #myChart {
-            width: 100% !important;
-            height: auto !important;
-        }
-        .btn-block {
-            margin-bottom: 10px; /* Espaçamento entre os botões */
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
 <body>
     <div class="container-fluid mt-5">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="sidebar">
                     <div class="form-group">
                         <label for="instanceInput">Instância</label>
                         <input type="text" class="form-control" id="instanceInput" placeholder="Nome da Instância">
                     </div>
-                    <button type="button" class="btn btn-success btn-block">Logar WhatsApp</button>
-                    <button type="button" class="btn btn-warning btn-block">Reiniciar Sessão</button>
-                    <button type="button" class="btn btn-danger btn-block">Deslogar</button>
-                    <button type="button" class="btn btn-primary btn-block">Iniciar Maturação</button>
+                    <button type="button" class="btn btn-success mb-2">Logar WhatsApp</button>
+                    <button type="button" class="btn btn-warning mb-2">Reiniciar Sessão</button>
+                    <button type="button" class="btn btn-danger mb-3">Deslogar</button>
+                    <button type="button" class="btn btn-primary btn-block mb-2">Iniciar Maturação</button>
                     <button type="button" class="btn btn-info btn-block">Atualizar Contadores</button>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="chart-container">
                     <canvas id="myChart"></canvas>
                 </div>
@@ -74,8 +74,7 @@
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false, // Adicionado para manter a responsividade sem manter a proporção
+                maintainAspectRatio: false,
                 scales: {
                     yAxes: [{
                         ticks: {
