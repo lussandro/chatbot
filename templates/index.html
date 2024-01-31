@@ -13,12 +13,6 @@
             padding: 20px;
             margin-bottom: 20px;
         }
-        .chart-container {
-            position: relative;
-            height: 40vh; /* Ajuste a altura do gráfico aqui */
-            width: 80vw; /* Ajuste a largura do gráfico aqui */
-            margin: auto;
-        }
     </style>
 </head>
 <body>
@@ -26,13 +20,19 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="sidebar">
-                    <!-- ... (elementos do painel lateral) -->
+                    <div class="form-group">
+                        <label for="instanceInput">Instância</label>
+                        <input type="text" class="form-control" id="instanceInput" placeholder="Nome da Instância">
+                    </div>
+                    <button type="button" class="btn btn-success mb-2">Logar WhatsApp</button>
+                    <button type="button" class="btn btn-warning mb-2">Reiniciar Sessão</button>
+                    <button type="button" class="btn btn-danger mb-3">Deslogar</button>
+                    <button type="button" class="btn btn-primary btn-block mb-2">Iniciar Maturação</button>
+                    <button type="button" class="btn btn-secondary btn-block">Atualizar Contadores</button>
                 </div>
             </div>
             <div class="col-md-9">
-                <div class="chart-container">
-                    <canvas id="myChart"></canvas>
-                </div>
+                <canvas id="myChart"></canvas>
             </div>
         </div>
     </div>
