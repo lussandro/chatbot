@@ -24,6 +24,10 @@ class Config(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     msg_count = db.Column(db.Integer, default=0)  # Campo para contar as mensagens
 
+class Bot(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(120), nullable=False)
+    numero = db.Column(db.String(15), unique=True, nullable=False)
 
 @app.route('/')
 def index():
@@ -32,6 +36,24 @@ def index():
     config = Config.query.first()
     msg_count = config.msg_count if config else 0
     return render_template('index.html', total_grupos=total_grupos, total_contatos=total_contatos, msg_count=msg_count)
+
+@app.route('/add-bot', methods=['POST'])
+def add_bot():
+    nome = request.form['nome']
+    numero = request.form['numero']
+    # Validação simples do número para garantir que segue o formato desejado
+    if not (numero.isdigit() and len(numero) == 13 and numero.startswith("55")):
+        return jsonify({"error": "Número inválido. Use o formato 55XXXXXXXXXXX."}), 400
+
+    # Verifica se o bot já existe
+    existing_bot = Bot.query.filter_by(numero=numero).first()
+    if existing_bot:
+        return jsonify({"error": "Um bot com este número já existe."}), 400
+    
+    new_bot = Bot(nome=nome, numero=numero)
+    db.session.add(new_bot)
+    db.session.commit()
+    return jsonify({"message": "Bot adicionado com sucesso!"}), 201
 
 @app.route('/webhook', methods=['POST'])
 def webhook():

@@ -12,7 +12,7 @@
             border-radius: 0.25rem;
             padding: 20px;
             margin-bottom: 20px;
-            height: calc(100vh - 50px); /* Altura ajustada para a altura da tela */
+            height: calc(100vh - 50px);
             position: sticky;
             top: 15px;
         }
@@ -40,7 +40,14 @@
                     <button type="button" class="btn btn-warning mb-2">Reiniciar Sessão</button>
                     <button type="button" class="btn btn-danger mb-3">Deslogar</button>
                     <button type="button" class="btn btn-primary btn-block mb-2">Iniciar Maturação</button>
-                    <button type="button" class="btn btn-info btn-block">Atualizar Contadores</button>
+                    <button type="button" class="btn btn-info btn-block mb-4">Atualizar Contadores</button>
+
+                    <h4 class="mb-2">Adicionar Bot</h4>
+                    <div class="form-group">
+                        <input type="tel" class="form-control mb-2" id="botNumero" placeholder="Número (55XXXXXXXXXXX)" pattern="\d{13}">
+                        <input type="text" class="form-control mb-2" id="botNome" placeholder="Nome do Bot">
+                        <button type="button" class="btn btn-secondary btn-block" onclick="adicionarBot()">Adicionar</button>
+                    </div>
                 </div>
             </div>
             <div class="col-md-9">
@@ -52,38 +59,74 @@
     </div>
 
     <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Grupos', 'Contatos', 'Mensagens Recebidas'],
-                datasets: [{
-                    label: 'Total',
-                    data: [{{ total_grupos }}, {{ total_contatos }}, {{ msg_count }}],
-                    backgroundColor: [
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(75, 192, 192, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(75, 192, 192, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
+        var myChart;
+
+        window.onload = function() {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Grupos', 'Contatos', 'Mensagens Recebidas', 'Bots'],
+                    datasets: [{
+                        label: 'Total',
+                        data: [{{ total_grupos }}, {{ total_contatos }}, {{ msg_count }}, {{ total_bots }}],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
                     }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
                 }
-            }
-        });
+            });
+        };
+
+        function adicionarBot() {
+            var nome = document.getElementById('botNome').value;
+            var numero = document.getElementById('botNumero').value;
+
+            fetch('/add-bot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'nome=' + nome + '&numero=' + numero
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert(data.message);
+                    atualizarDadosGrafico();
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao adicionar o bot:', error);
+            });
+        }
+
+        function atualizarDadosGrafico() {
+            // Implementar lógica de atualização dos dados do gráfico
+            // Pode incluir uma chamada fetch para buscar dados atualizados do backend
+        }
     </script>
 </body>
 </html>
