@@ -49,8 +49,8 @@ def fetch_groups():
     if response.status_code == 200:
         groups = response.json()
         for group in groups:
-            grupo_existente = Grupo.query.get(group['id'])
-            if not grupo_existente:
+            # Verifica se o grupo já existe no banco de dados
+            if not Grupo.query.get(group['id']):
                 novo_grupo = Grupo(id=group['id'], subject=group['subject'])
                 db.session.add(novo_grupo)
         
