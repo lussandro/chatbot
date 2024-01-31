@@ -15,6 +15,10 @@ class Contato(db.Model):
     nome = db.Column(db.String(120), nullable=False)
     instancia = db.Column(db.String(120), nullable=False)
 
+class Grupo(db.Model):
+    id = db.Column(db.String(120), primary_key=True)
+    subject = db.Column(db.String(120), nullable=False)
+
 @app.route('/webhook', methods=['POST'])
 def webhook():
     data = request.json
@@ -36,6 +40,23 @@ def webhook():
         print("Contato já existe:", contato_existente.numero, contato_existente.nome, contato_existente.instancia)
 
     return jsonify({"message": "Dados recebidos e processados com sucesso!"}), 200
+@app.route('/fetch-groups', methods=['GET'])
+def fetch_groups():
+    response = requests.get('https://api.chatcoreapi.io/group/fetchAllGroups/chatwoot?getParticipants=false',
+                            headers={'apikey': '3mntbabbkufosmai26dwlm'})
+    
+    if response.status_code == 200:
+        groups = response.json()
+        for group in groups:
+            grupo_existente = Grupo.query.get(group['id'])
+            if not grupo_existente:
+                novo_grupo = Grupo(id=group['id'], subject=group['subject'])
+                db.session.add(novo_grupo)
+        
+        db.session.commit()
+        return jsonify({"message": "Grupos atualizados com sucesso!"}), 200
+    else:
+        return jsonify({"error": "Falha ao buscar grupos"}), response.status_code
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True, port=5000)
