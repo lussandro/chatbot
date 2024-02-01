@@ -27,6 +27,7 @@ class Config(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     msg_count = db.Column(db.Integer, default=0)  
     msg_sent = db.Column(db.Integer, default=1)
+    msg_old = db.Column(db.String(120), nullable=False)
     webhook_enabled = db.Column(db.Boolean, default=True)
 
 class Bot(db.Model):
