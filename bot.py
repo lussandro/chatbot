@@ -131,7 +131,7 @@ def webhook():
         config = Config.query.first()
         frases = carregar_frases()
         mensagem = random.choice(frases)
-        enviar_mensagem(remotejid, mensagem)
+        enviar_mensagem(remote_jid, mensagem)
         if not config:
             config = Config(msg_count=1)
             db.session.add(config)
