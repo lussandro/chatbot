@@ -41,6 +41,11 @@ def carregar_frases():
         frases = arquivo.readlines()
     return [frase.strip() for frase in frases]
 
+def carregar_bots():
+    with open('bots.txt', 'r', encoding='utf-8') as arquivo:
+        bots = arquivo.readlines()
+    return [bot.strip() for bot in bots]
+
 def enviar_mensagem(telefone,mensagem):
     url = 'https://api.chatcoreapi.io/message/sendText/chatwoot'
     payload = {
@@ -67,7 +72,9 @@ def enviar_mensagem(telefone,mensagem):
 def index():
     total_grupos = Grupo.query.count()
     total_contatos = Contato.query.count()
-    total_bots = Bot.query.count()
+    with open('bots.txt', 'r') as arquivo:
+        total_bots = sum(1 for linha in arquivo)
+        
     config = Config.query.first()
     msg_count = config.msg_count if config else 0
     msg_sent = config.msg_sent if config else 0
@@ -75,9 +82,9 @@ def index():
 
 @app.route('/iniciar-maturacao', methods=['GET'])
 def iniciar_maturacao():
-    bots = Bot.query.all()  # Carregar todos os bots do banco de dados
+    bots = carregar_bots()
     for bot in bots:
-        enviar_mensagem(bot.numero, "Mensagem de início de maturação")  # Substituir pela mensagem desejada
+        enviar_mensagem(bot, "olá, tudo bem?")  # Substituir pela mensagem desejada
         intervalo = random.randint(1, 27)
         time.sleep(intervalo)  # Espera um intervalo aleatório entre 1 a 27 segundos
     return jsonify({"status": "Mensagens enviadas com sucesso para todos os bots!"}), 200
