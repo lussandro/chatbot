@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import requests
+import random
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///contatos.db'
@@ -24,13 +25,41 @@ class Grupo(db.Model):
 
 class Config(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    msg_count = db.Column(db.Integer, default=0)  # Campo para contar as mensagens
+    msg_count = db.Column(db.Integer, default=0)  
+    msg_sent = db.Column(db.Integer, default=0)
 
 class Bot(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(120), nullable=False)
     numero = db.Column(db.String(15), unique=True, nullable=False)
 
+def carregar_frases():
+    with open('frases.txt', 'r', encoding='utf-8') as arquivo:
+        frases = arquivo.readlines()
+    return [frase.strip() for frase in frases]
+
+def enviar_mensagem(telefone,mensagem):
+    url = 'https://api.chatcoreapi.io/message/sendText/chatcore'
+    payload = {
+        "number": telefone,
+        "options": {
+            "delay": 1200,
+            "presence": "composing",
+            "mentions": {
+                "everyOne": True
+            }
+        },
+        "textMessage": {
+            "text": mensagem
+        }
+    }
+    headers = {
+        'accept': 'application/json',
+        'apikey': 'B6D711FCDE4D4FD5936544120E713976',
+        'Content-Type': 'application/json'
+    }
+    response = requests.post(url, json=payload, headers=headers)
+    return response
 @app.route('/')
 def index():
     total_grupos = Grupo.query.count()
@@ -100,6 +129,9 @@ def webhook():
         
     if message:
         config = Config.query.first()
+        frases = carregar_frases()
+        mensagem = random.choice(frases)
+        enviar_mensagem(remotejid, mensagem)
         if not config:
             config = Config(msg_count=1)
             db.session.add(config)
@@ -117,6 +149,7 @@ def webhook():
 
     db.session.commit()
     return jsonify({"message": "Dados recebidos e processados com sucesso!"}), 200
+
 
 @app.route('/fetch-groups', methods=['GET'])
 def fetch_groups():

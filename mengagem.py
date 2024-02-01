@@ -2,7 +2,7 @@ import requests
 import random
 import time
 
-def enviar_mensagem(telefone):
+def enviar_mensagem(telefone,mensagem):
     url = 'https://api.chatcoreapi.io/message/sendText/chatcore'
     payload = {
         "number": telefone,
@@ -14,7 +14,7 @@ def enviar_mensagem(telefone):
             }
         },
         "textMessage": {
-            "text": "Oieee, fazendo qoue de bom?"
+            "text": mensagem
         }
     }
     headers = {
