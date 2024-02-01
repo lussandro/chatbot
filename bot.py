@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import requests
 import random
+import time
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///contatos.db'
@@ -71,6 +72,15 @@ def index():
     msg_count = config.msg_count if config else 0
     msg_sent = config.msg_sent if config else 0
     return render_template('index.html', total_grupos=total_grupos, total_contatos=total_contatos, msg_count=msg_count, total_bots=total_bots, msg_sent=msg_sent)
+
+@app.route('/iniciar-maturacao', methods=['GET'])
+def iniciar_maturacao():
+    bots = Bot.query.all()  # Carregar todos os bots do banco de dados
+    for bot in bots:
+        enviar_mensagem(bot.numero, "Mensagem de início de maturação")  # Substituir pela mensagem desejada
+        intervalo = random.randint(1, 27)
+        time.sleep(intervalo)  # Espera um intervalo aleatório entre 1 a 27 segundos
+    return jsonify({"status": "Mensagens enviadas com sucesso para todos os bots!"}), 200
 
 @app.route('/update_picture', methods=['POST'])
 def update_picture():
