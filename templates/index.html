@@ -72,10 +72,10 @@
             myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Grupos', 'Contatos', 'Mensagens Recebidas', 'Bots', 'Mensagens Enviadas'],
+                    labels: ['Grupos', 'Contatos', 'Mensagens Recebidas',  'Mensagens Enviadas'],
                     datasets: [{
                         label: 'Total',
-                        data: [ '{{ total_grupos }}, {{ total_contatos }}, {{ msg_count }}, {{ total_bots }}, {{ msg_sent }} '], // Substitua esses valores pelos dados do seu servidor
+                        data: [{{ total_grupos }}, {{ total_contatos }}, {{ msg_count }}, {{ msg_sent }} ], // Substitua esses valores pelos dados do seu servidor
                         backgroundColor: [
                             'rgba(54, 162, 235, 0.2)',
                             'rgba(255, 99, 132, 0.2)',
