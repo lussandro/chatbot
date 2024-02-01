@@ -54,15 +54,11 @@ def carregar_bots():
 
 # Classe para o servidor webhook, que permite iniciar e parar o servidor Flask
 class WebhookServer(threading.Thread):
-    def __init__(self):
-        super().__init__()
-        self.srv = make_server('localhost', 5001, self.create_app())
-        self.ctx = self.srv.app.app_context()
-        self.ctx.push()
+    def run(self):
+        webhook_app = Flask("webhook_app")
 
-    def create_app(self):
-        webhook_app = Flask(__name__)
 
+    
         @webhook_app.route('/webhook', methods=['POST'])
         def webhook():
             data = request.json
@@ -98,11 +94,7 @@ class WebhookServer(threading.Thread):
             db.session.commit()
             return jsonify({"message": "Dados recebidos e processados com sucesso!"}), 200
 
-        def run(self):
-            self.srv.serve_forever()
-
-        def shutdown(self):
-            self.srv.shutdown()
+        webhook_app.run(host='localhost', port=5001, debug=True, use_reloader=False)   
 
 # Função para iniciar o servidor webhook por um tempo limitado
 def start_webhook_server_for_limited_time():
