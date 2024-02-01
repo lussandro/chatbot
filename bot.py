@@ -27,6 +27,7 @@ class Config(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     msg_count = db.Column(db.Integer, default=0)  
     msg_sent = db.Column(db.Integer, default=0)
+    webhook_enabled = db.Column(db.Boolean, default=True)
 
 class Bot(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -67,7 +68,8 @@ def index():
     total_bots = Bot.query.count()
     config = Config.query.first()
     msg_count = config.msg_count if config else 0
-    return render_template('index.html', total_grupos=total_grupos, total_contatos=total_contatos, msg_count=msg_count, total_bots=total_bots)
+    msg_sent = config.msg_sent if config else 0
+    return render_template('index.html', total_grupos=total_grupos, total_contatos=total_contatos, msg_count=msg_count, total_bots=total_bots, msg_sent=msg_sent)
 
 @app.route('/update_picture', methods=['POST'])
 def update_picture():
