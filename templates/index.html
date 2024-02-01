@@ -82,7 +82,7 @@
             myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Grupos', 'Contatos', 'Mensagens Recebidas', 'Bots'],
+                    labels: ['Grupos', 'Contatos', 'Mensagens Recebidas', 'Bots', 'Mensagens Enviadas'],
                     datasets: [{
                         label: 'Total',
                         data: [{{ total_grupos }}, {{ total_contatos }}, {{ msg_count }}, {{ total_bots }}, {{ msg_sent }}],
