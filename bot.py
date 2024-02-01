@@ -98,11 +98,11 @@ class WebhookServer(threading.Thread):
             db.session.commit()
             return jsonify({"message": "Dados recebidos e processados com sucesso!"}), 200
 
-    def run(self):
-        self.srv.serve_forever()
+        def run(self):
+            self.srv.serve_forever()
 
-    def shutdown(self):
-        self.srv.shutdown()
+        def shutdown(self):
+            self.srv.shutdown()
 
 # Função para iniciar o servidor webhook por um tempo limitado
 def start_webhook_server_for_limited_time():
