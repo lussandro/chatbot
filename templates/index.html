@@ -31,7 +31,30 @@
     <div class="container-fluid mt-5">
         <div class="row">
             <div class="col-md-3">
-                <!-- Sidebar com os controles -->
+                <div class="sidebar">
+                    <div class="form-group">
+                        <label for="instanceInput">Instância</label>
+                        <input type="text" class="form-control" id="instanceInput" placeholder="Nome da Instância">
+                    </div>
+                    <button type="button" class="btn btn-success mb-2">Logar WhatsApp</button>
+                    <button type="button" class="btn btn-warning mb-2">Reiniciar Sessão</button>
+                    <button type="button" class="btn btn-danger mb-3">Deslogar</button>
+                    <button type="button" class="btn btn-primary btn-block mb-2">Iniciar Maturação</button>
+                    <button type="button" class="btn btn-info btn-block mb-4" onclick="window.location.href = '/'">Atualizar Contadores</button>
+                    <button type="button" class="btn btn-info btn-block mb-4" onclick="window.location.href = '/fetch-groups'">Atualizar Grupos</button>
+
+                    <h4 class="mb-2">Adicionar Bot</h4>
+                    <div class="form-group">
+                        <input type="tel" class="form-control mb-2" id="botNumero" placeholder="Número (55XXXXXXXXXXX)" pattern="\d{13}">
+                        <input type="text" class="form-control mb-2" id="botNome" placeholder="Nome do Bot">
+                        <button type="button" class="btn btn-warning mb-2" onclick="adicionarBot()">Adicionar</button>
+                    </div>
+                    <h4 class="mb-2">Atualizar Foto</h4>
+                    <div class="form-group">
+                        <input type="url" class="form-control mb-2" id="new_picture_url" placeholder="Nova URL da Imagem" required>
+                        <button type="button" class="btn btn-success mb-2" onclick="atualizarImagemBot()">Atualizar Foto de Perfil</button>
+                    </div>
+                </div>
             </div>
             <div class="col-md-9">
                 <div class="chart-container">
@@ -44,7 +67,7 @@
     <script>
         var myChart;
 
-        function loadChart() {
+        window.onload = function() {
             var ctx = document.getElementById('myChart').getContext('2d');
             myChart = new Chart(ctx, {
                 type: 'bar',
@@ -52,19 +75,17 @@
                     labels: ['Grupos', 'Contatos', 'Mensagens Recebidas', 'Bots', 'Mensagens Enviadas'],
                     datasets: [{
                         label: 'Total',
-                        data: [{{ total_grupos }}, {{ total_contatos }}, {{ msg_count }}, {{ total_bots }}, {{ msg_sent }}], // Substitua estes números pelos valores reais
+                        data: [ '{{ total_grupos }}, {{ total_contatos }}, {{ msg_count }}, {{ total_bots }}, {{ msg_sent }} '], // Substitua esses valores pelos dados do seu servidor
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
                             'rgba(75, 192, 192, 0.2)',
                             'rgba(153, 102, 255, 0.2)',
                             'rgba(255, 159, 64, 0.2)'
                         ],
                         borderColor: [
-                            'rgba(255, 99, 132, 1)',
                             'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
+                            'rgba(255, 99, 132, 1)',
                             'rgba(75, 192, 192, 1)',
                             'rgba(153, 102, 255, 1)',
                             'rgba(255, 159, 64, 1)'
@@ -73,16 +94,46 @@
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
                 }
+            });
+        };
+
+        function adicionarBot() {
+            var nome = document.getElementById('botNome').value;
+            var numero = document.getElementById('botNumero').value;
+
+            fetch('/add-bot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'nome=' + nome + '&numero=' + numero
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert(data.message);
+                    // Atualize aqui seus dados do gráfico, se necessário
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao adicionar o bot:', error);
             });
         }
 
-        // Garanta que o DOM esteja completamente carregado antes de chamar a função
-        document.addEventListener('DOMContentLoaded', function() {
-            loadChart();
-        });
+        function atualizarImagemBot() {
+            // Implemente a lógica para atualizar a imagem do bot aqui
+        }
     </script>
 </body>
 </html>
