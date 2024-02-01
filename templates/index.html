@@ -39,21 +39,11 @@
                     <button type="button" class="btn btn-success mb-2">Logar WhatsApp</button>
                     <button type="button" class="btn btn-warning mb-2">Reiniciar Sessão</button>
                     <button type="button" class="btn btn-danger mb-3">Deslogar</button>
-                    <button type="button" class="btn btn-primary btn-block mb-2">Iniciar Maturação</button>
+                    <button type="button" class="btn btn-primary btn-block mb-2" onclick="window.location.href = '/iniciar-maturacao'">Iniciar Maturação</button>
                     <button type="button" class="btn btn-info btn-block mb-4" onclick="window.location.href = '/'">Atualizar Contadores</button>
                     <button type="button" class="btn btn-info btn-block mb-4" onclick="window.location.href = '/fetch-groups'">Atualizar Grupos</button>
 
-                    <h4 class="mb-2">Adicionar Bot</h4>
-                    <div class="form-group">
-                        <input type="tel" class="form-control mb-2" id="botNumero" placeholder="Número (55XXXXXXXXXXX)" pattern="\d{13}">
-                        <input type="text" class="form-control mb-2" id="botNome" placeholder="Nome do Bot">
-                        <button type="button" class="btn btn-warning mb-2" onclick="adicionarBot()">Adicionar</button>
-                    </div>
-                    <h4 class="mb-2">Atualizar Foto</h4>
-                    <div class="form-group">
-                        <input type="url" class="form-control mb-2" id="new_picture_url" placeholder="Nova URL da Imagem" required>
-                        <button type="button" class="btn btn-success mb-2" onclick="atualizarImagemBot()">Atualizar Foto de Perfil</button>
-                    </div>
+                    
                 </div>
             </div>
             <div class="col-md-9">
