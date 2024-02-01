@@ -40,6 +40,36 @@ def index():
     msg_count = config.msg_count if config else 0
     return render_template('index.html', total_grupos=total_grupos, total_contatos=total_contatos, msg_count=msg_count, total_bots=total_bots)
 
+@app.route('/update_picture', methods=['POST'])
+def update_picture():
+    if request.method == 'POST':
+        # Obter a URL da imagem do formulário
+        new_picture_url = request.form.get('new_picture_url')
+
+        # Configurar os cabeçalhos da solicitação
+        headers = {
+            'Content-Type': 'application/json',
+            'apikey': '3mntbabbkufosmai26dwlm'
+        }
+
+        # Construir os dados da solicitação
+        data = {
+            'picture': new_picture_url
+        }
+
+        # Fazer a chamada PUT para atualizar a imagem do bot
+        response = requests.put('https://api.chatcoreapi.io/chat/updateProfilePicture/chatwoot', headers=headers, json=data)
+
+        # Verificar se a solicitação foi bem-sucedida
+        if response.status_code == 200:
+            # Imagem do bot atualizada com sucesso
+            return "Imagem do bot atualizada com sucesso!"
+        else:
+            # Houve um erro na solicitação
+            return "Erro ao atualizar a imagem do bot. Código de status: " + str(response.status_code)
+
+        # Redirecionar de volta para a página principal após a atualização
+    return redirect(url_for('index'))
 @app.route('/add-bot', methods=['POST'])
 def add_bot():
     nome = request.form['nome']
@@ -115,6 +145,7 @@ def fetch_groups():
         
     else:
         return jsonify({"error": "Falha ao buscar grupos"}), response.status_code
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',debug=True, port=5000)

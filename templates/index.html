@@ -50,7 +50,12 @@
                         <input type="text" class="form-control mb-2" id="botNome" placeholder="Nome do Bot">
                         <button type="button" class="btn btn-secondary btn-block" onclick="adicionarBot()">Adicionar</button>
                     </div>
-
+                    <form action="/update_picture" method="POST">
+                        <label for="new_picture_url">Nova URL da Imagem:</label>
+                        <input type="text" id="new_picture_url" name="new_picture_url" required>
+                        <button type="submit">Atualizar Imagem do Bot</button>
+                    </form>
+                    
                 </div>
             </div>
             <div class="col-md-9">
