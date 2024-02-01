@@ -136,9 +136,11 @@ def webhook():
         enviar_mensagem(remote_jid, mensagem)
         if not config:
             config = Config(msg_count=1)
+            config = Config(msg_sent=1)
             db.session.add(config)
         else:
             config.msg_count += 1
+            config.msg_sent += 1
         db.session.commit()
 
     # Tratamento de contatos
