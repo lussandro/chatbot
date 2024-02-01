@@ -39,7 +39,7 @@ def carregar_frases():
     return [frase.strip() for frase in frases]
 
 def enviar_mensagem(telefone,mensagem):
-    url = 'https://api.chatcoreapi.io/message/sendText/chatcore'
+    url = 'https://api.chatcoreapi.io/message/sendText/chatwoot'
     payload = {
         "number": telefone,
         "options": {
