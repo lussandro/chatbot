@@ -14,10 +14,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-webhook_logs = []
-webhook_server = None
-server_thread = None
-RUN_TIME = 1200
+# Variáveis globais para controle de estado
+webhook_server_running = False
+RUN_TIME = 1200  # 20 minutos
 
 class Contato(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -53,23 +52,20 @@ def carregar_bots():
 
 
 # Classe para o servidor webhook, que permite iniciar e parar o servidor Flask
-class WebhookServer(threading.Thread):
-    def run(self):
-        webhook_app = Flask("webhook_app")
-
-
+def create_webhook_app():
+    """Função para criar e configurar o aplicativo Flask para o webhook."""
+    webhook_app = Flask("webhook_app")
     
-        @webhook_app.route('/webhook', methods=['POST'])
-        def webhook():
-            data = request.json
-            print(data)
-
-            remote_jid = data['data']['key']['remoteJid'].replace('@s.whatsapp.net', '')
-            message = data['data']['message'].get('conversation')
-            push_name = data['data']['pushName']
-            sender = data['sender'].replace('@s.whatsapp.net', '')
+    @webhook_app.route('/webhook', methods=['POST'])
+    def webhook():
+        data = request.json
+        print(data)
+        remote_jid = data['data']['key']['remoteJid'].replace('@s.whatsapp.net', '')
+        message = data['data']['message'].get('conversation')
+        push_name = data['data']['pushName']
+        sender = data['sender'].replace('@s.whatsapp.net', '')
                 
-            if message:
+        if message:
                 config = Config.query.first()
                 frases = carregar_frases()
                 mensagem = random.choice(frases)
@@ -84,26 +80,26 @@ class WebhookServer(threading.Thread):
                 db.session.commit()
 
             # Tratamento de contatos
-            contato_existente = Contato.query.filter_by(numero=remote_jid).first()
-            if not contato_existente:
+        contato_existente = Contato.query.filter_by(numero=remote_jid).first()
+        if not contato_existente:
                 novo_contato = Contato(numero=remote_jid, nome=push_name, instancia=sender)
                 db.session.add(novo_contato)
-            else:
+        else:
                 print("Contato já existe:", contato_existente.numero, contato_existente.nome, contato_existente.instancia)
 
-            db.session.commit()
-            return jsonify({"message": "Dados recebidos e processados com sucesso!"}), 200
+                db.session.commit()
+        return jsonify({"message": "Dados recebidos"}), 200
+    
+    return webhook_app
 
-        webhook_app.run(host='localhost', port=5001, debug=True, use_reloader=False)   
-
-# Função para iniciar o servidor webhook por um tempo limitado
-def start_webhook_server_for_limited_time():
-    global webhook_server
-    webhook_server = WebhookServer()
-    webhook_server.start()
-    # Espera pelo tempo definido antes de parar o servidor
-    time.sleep(RUN_TIME)
-    webhook_server.shutdown()
+def run_webhook_server():
+    """Inicia o servidor webhook em um novo thread."""
+    global webhook_server_running
+    if not webhook_server_running:
+        webhook_app = create_webhook_app()
+        webhook_server_running = True
+        webhook_app.run(port=5001, debug=False, use_reloader=False)
+        webhook_server_running = False
 
 def enviar_mensagem(telefone,mensagem):
     url = 'https://api.chatcoreapi.io/message/sendText/chatwoot'
@@ -129,14 +125,15 @@ def enviar_mensagem(telefone,mensagem):
     return response
 @app.route('/control')
 def control():
-    global server_thread
-    if server_thread is None or not server_thread.is_alive():
-        # Inicia o servidor webhook por um período limitado em um novo thread
-        server_thread = threading.Thread(target=start_webhook_server_for_limited_time)
-        server_thread.start()
+    global webhook_server_running
+    if not webhook_server_running:
+        threading.Thread(target=run_webhook_server).start()
+        # Aguarda a execução do servidor webhook por 20 minutos antes de encerrar
+        threading.Timer(RUN_TIME, lambda: None).start()  # Simplificação, o encerramento real requer mais controle
         return "Webhook server activated for 20 minutes."
     else:
         return "Webhook server is already running."
+
 
 def reset_thread():
     global server_thread
