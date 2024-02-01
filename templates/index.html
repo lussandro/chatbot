@@ -52,7 +52,7 @@
                     labels: ['Grupos', 'Contatos', 'Mensagens Recebidas', 'Bots', 'Mensagens Enviadas'],
                     datasets: [{
                         label: 'Total',
-                        data: [12, 19, 3, 5, 2, 3], // Substitua estes números pelos valores reais
+                        data: [{{ total_grupos }}, {{ total_contatos }}, {{ msg_count }}, {{ total_bots }}, {{ msg_sent }}], // Substitua estes números pelos valores reais
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
