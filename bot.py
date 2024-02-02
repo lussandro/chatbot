@@ -177,8 +177,8 @@ def webhook():
             config = Config.query.first()
             frases = carregar_frases()
             mensagem = random.choice(frases)
-            msg = enviar_mensagem(remote_jid, mensagem)
-            print(msg)
+            enviar_mensagem(remote_jid, mensagem)
+            
             if not config:
                 config = Config(msg_count=1)
                 config = Config(msg_sent=1)
