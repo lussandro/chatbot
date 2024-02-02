@@ -3,10 +3,14 @@ import random
 import redis
 import json
 import requests
+import os
+from dotenv import load_dotenv
 
-
+# Carregue as variáveis de ambiente do arquivo .env
+load_dotenv()
+instance_name = os.environ.get("INSTANCE_NAME")
 def enviar_mensagem(telefone,mensagem):
-    url = 'https://api.chatcoreapi.io/message/sendText/teste3'
+    url = os.environ.get("API_URL") + instance_name
     payload = {
         "number": telefone,
         "options": {

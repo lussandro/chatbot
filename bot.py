@@ -3,6 +3,8 @@ from werkzeug.serving import make_server
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import requests, json, random, time, redis, threading
+import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///contatos.db'
@@ -39,6 +41,7 @@ class Bot(db.Model):
     nome = db.Column(db.String(120), nullable=False)
     numero = db.Column(db.String(15), unique=True, nullable=False)
 
+load_dotenv()
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 def carregar_frases():
