@@ -69,7 +69,7 @@ def enviar_mensagem(telefone,mensagem):
     }
     headers = {
         'accept': 'application/json',
-        'apikey': 'B6D711FCDE4D4FD5936544120E713976',
+        'apikey': 'rpvut47ozf9u55nvia3tmi',
         'Content-Type': 'application/json'
     }
     response = requests.post(url, json=payload, headers=headers)
