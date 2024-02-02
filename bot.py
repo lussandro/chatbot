@@ -193,7 +193,7 @@ def webhook():
             novo_contato = Contato(numero=remote_jid, nome=push_name, instancia=sender)
             db.session.add(novo_contato)
         else:
-        print("Contato já existe:", contato_existente.numero, contato_existente.nome, contato_existente.instancia)
+            print("Contato já existe:", contato_existente.numero, contato_existente.nome, contato_existente.instancia)
 
         db.session.commit()
         return jsonify({"message": "Dados recebidos e processados com sucesso!"}), 200
