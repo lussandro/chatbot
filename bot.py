@@ -15,8 +15,8 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 # Variáveis globais para controle de estado
-webhook_server_running = False
-RUN_TIME = 1200  # 20 minutos
+respostas_ativas = False
+
 
 class Contato(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -51,55 +51,6 @@ def carregar_bots():
     return [bot.strip() for bot in bots]
 
 
-# Classe para o servidor webhook, que permite iniciar e parar o servidor Flask
-def create_webhook_app():
-    """Função para criar e configurar o aplicativo Flask para o webhook."""
-    webhook_app = Flask("webhook_app")
-    
-    @webhook_app.route('/webhook', methods=['POST'])
-    def webhook():
-        data = request.json
-        print(data)
-        remote_jid = data['data']['key']['remoteJid'].replace('@s.whatsapp.net', '')
-        message = data['data']['message'].get('conversation')
-        push_name = data['data']['pushName']
-        sender = data['sender'].replace('@s.whatsapp.net', '')
-                
-        if message:
-                config = Config.query.first()
-                frases = carregar_frases()
-                mensagem = random.choice(frases)
-                enviar_mensagem(remote_jid, mensagem)
-                if not config:
-                    config = Config(msg_count=1)
-                    config = Config(msg_sent=1)
-                    db.session.add(config)
-                else:
-                    config.msg_count += 1
-                    config.msg_sent += 1
-                db.session.commit()
-
-            # Tratamento de contatos
-        contato_existente = Contato.query.filter_by(numero=remote_jid).first()
-        if not contato_existente:
-                novo_contato = Contato(numero=remote_jid, nome=push_name, instancia=sender)
-                db.session.add(novo_contato)
-        else:
-                print("Contato já existe:", contato_existente.numero, contato_existente.nome, contato_existente.instancia)
-
-                db.session.commit()
-        return jsonify({"message": "Dados recebidos"}), 200
-    
-    return webhook_app
-
-def run_webhook_server():
-    """Inicia o servidor webhook em um novo thread."""
-    global webhook_server_running
-    if not webhook_server_running:
-        webhook_app = create_webhook_app()
-        webhook_server_running = True
-        webhook_app.run(port=5001, debug=False, use_reloader=False)
-        webhook_server_running = False
 
 def enviar_mensagem(telefone,mensagem):
     url = 'https://api.chatcoreapi.io/message/sendText/chatwoot'
@@ -123,16 +74,19 @@ def enviar_mensagem(telefone,mensagem):
     }
     response = requests.post(url, json=payload, headers=headers)
     return response
-@app.route('/control')
+
+@app.route('/control', methods=['GET'])
 def control():
-    global webhook_server_running
-    if not webhook_server_running:
-        threading.Thread(target=run_webhook_server).start()
-        # Aguarda a execução do servidor webhook por 20 minutos antes de encerrar
-        threading.Timer(RUN_TIME, lambda: None).start()  # Simplificação, o encerramento real requer mais controle
-        return "Webhook server activated for 20 minutes."
+    global respostas_ativas
+    if not respostas_ativas:
+        respostas_ativas = True
+        print("Respostas do webhook ativadas por 20 minutos.")
+        # Define um temporizador para desativar as respostas após 20 minutos
+        timer = threading.Timer(1200, desativar_respostas)
+        timer.start()
+        return "Respostas do webhook ativadas por 20 minutos."
     else:
-        return "Webhook server is already running."
+        return "Respostas do webhook já estão ativas."
 
 
 def reset_thread():
@@ -208,40 +162,48 @@ def add_bot():
     db.session.commit()
     return jsonify({"message": "Bot adicionado com sucesso!"}), 201
 
-# @app.route('/webhook', methods=['POST'])
-# def webhook():
-#     data = request.json
-#     print(data)
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    if respostas_ativas:
+        data = request.json
+        print(data)
 
-#     remote_jid = data['data']['key']['remoteJid'].replace('@s.whatsapp.net', '')
-#     message = data['data']['message'].get('conversation')
-#     push_name = data['data']['pushName']
-#     sender = data['sender'].replace('@s.whatsapp.net', '')
-        
-#     if message:
-#         config = Config.query.first()
-#         frases = carregar_frases()
-#         mensagem = random.choice(frases)
-#         enviar_mensagem(remote_jid, mensagem)
-#         if not config:
-#             config = Config(msg_count=1)
-#             config = Config(msg_sent=1)
-#             db.session.add(config)
-#         else:
-#             config.msg_count += 1
-#             config.msg_sent += 1
-#         db.session.commit()
+        remote_jid = data['data']['key']['remoteJid'].replace('@s.whatsapp.net', '')
+        message = data['data']['message'].get('conversation')
+        push_name = data['data']['pushName']
+        sender = data['sender'].replace('@s.whatsapp.net', '')
+            
+        if message:
+            config = Config.query.first()
+            frases = carregar_frases()
+            mensagem = random.choice(frases)
+            enviar_mensagem(remote_jid, mensagem)
+            if not config:
+                config = Config(msg_count=1)
+                config = Config(msg_sent=1)
+                db.session.add(config)
+            else:
+                config.msg_count += 1
+                config.msg_sent += 1
+            db.session.commit()
 
-#     # Tratamento de contatos
-#     contato_existente = Contato.query.filter_by(numero=remote_jid).first()
-#     if not contato_existente:
-#         novo_contato = Contato(numero=remote_jid, nome=push_name, instancia=sender)
-#         db.session.add(novo_contato)
-#     else:
-#        print("Contato já existe:", contato_existente.numero, contato_existente.nome, contato_existente.instancia)
+        # Tratamento de contatos
+        contato_existente = Contato.query.filter_by(numero=remote_jid).first()
+        if not contato_existente:
+            novo_contato = Contato(numero=remote_jid, nome=push_name, instancia=sender)
+            db.session.add(novo_contato)
+        else:
+        print("Contato já existe:", contato_existente.numero, contato_existente.nome, contato_existente.instancia)
 
-#     db.session.commit()
-#     return jsonify({"message": "Dados recebidos e processados com sucesso!"}), 200
+        db.session.commit()
+        return jsonify({"message": "Dados recebidos e processados com sucesso!"}), 200
+    else:
+        return jsonify({"status": "inactive", "message": "Webhook inativo. Dados recebidos, mas não processados."}), 200
+
+def desativar_respostas():
+    global respostas_ativas
+    respostas_ativas = False
+    print("Respostas desativadas.")
 
 
 @app.route('/fetch-groups', methods=['GET'])
