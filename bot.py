@@ -174,8 +174,8 @@ def webhook():
         message = data['data']['message'].get('conversation')
         push_name = data['data']['pushName']
         sender = data['sender'].replace('@s.whatsapp.net', '')
-        grupo = data.get('data', {}).get('extendedTextMessage', {}).get('text')
-        if grupo:
+        grupo = data.get('data', {}).get('key', {}).get('remoteJid', '')
+        if '@g.us' in grupo:
             config = Config.query.first()
             if not config:
                 config = Config(msg_group = 1)
