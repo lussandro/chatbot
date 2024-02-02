@@ -178,7 +178,7 @@ def webhook():
         grupo = data.get('data', {}).get('key', {}).get('remoteJid', '')
         if '@g.us' in grupo:
             config = Config.query.first()
-            if not config:
+            if  config is None:
                 config = Config(msg_group = 1)
                 db.session.add(config)
             else:
