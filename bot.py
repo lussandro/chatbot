@@ -174,7 +174,16 @@ def webhook():
         message = data['data']['message'].get('conversation')
         push_name = data['data']['pushName']
         sender = data['sender'].replace('@s.whatsapp.net', '')
-            
+        grupo = data['data']['text']
+        if grupo:
+            config = Config.query.first()
+            if not config:
+                config = Config(msg_group = 1)
+                db.session.add(config)
+            else:
+                config.msg_group += 1
+                db.session.commit()
+
         if message:
             config = Config.query.first()
             frases = carregar_frases()
@@ -184,12 +193,12 @@ def webhook():
             if not config:
                 config = Config(msg_count=1)
                 config = Config(msg_sent=1)
-                config = Config(msg_group = 1)
+                
                 db.session.add(config)
             else:
                 config.msg_count += 1
                 config.msg_sent += 1
-                config.msg_group += 1
+                
             db.session.commit()
 
         # Tratamento de contatos
