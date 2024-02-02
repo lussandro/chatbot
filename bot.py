@@ -166,6 +166,7 @@ def add_bot():
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
+    
     if respostas_ativas:
         data = request.json
         print(data)
@@ -182,7 +183,7 @@ def webhook():
                 db.session.add(config)
             else:
                 config.msg_group += 1
-                db.session.commit()
+            db.session.commit()
 
         if message:
             config = Config.query.first()
