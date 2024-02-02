@@ -53,7 +53,7 @@ def carregar_bots():
 
 
 def enviar_mensagem(telefone,mensagem):
-    url = 'https://api.chatcoreapi.io/message/sendText/chatwoot'
+    url = 'https://api.chatcoreapi.io/message/sendText/teste3'
     payload = {
         "number": telefone,
         "options": {
@@ -80,9 +80,15 @@ def control():
     global respostas_ativas
     if not respostas_ativas:
         respostas_ativas = True
+        bots = carregar_bots()
+        for bot in bots:
+            enviar_mensagem(bot, "olá, tudo bem?")  # Substituir pela mensagem desejada
+            intervalo = random.randint(1, 27)
+            time.sleep(intervalo)  # Espera um intervalo aleatório entre 1 a 27 segundos
+            return jsonify({"status": "Mensagens enviadas com sucesso para todos os bots!"}), 200
         print("Respostas do webhook ativadas por 20 minutos.")
-        # Define um temporizador para desativar as respostas após 20 minutos
-        timer = threading.Timer(1200, desativar_respostas)
+            # Define um temporizador para desativar as respostas após 20 minutos
+        timer = threading.Timer(60, desativar_respostas)
         timer.start()
         return "Respostas do webhook ativadas por 20 minutos."
     else:
@@ -132,7 +138,7 @@ def update_picture():
         }
 
         # Fazer a chamada PUT para atualizar a imagem do bot
-        response = requests.put('https://api.chatcoreapi.io/chat/updateProfilePicture/chatwoot', headers=headers, json=data)
+        response = requests.put('https://api.chatcoreapi.io/chat/updateProfilePicture/teste3', headers=headers, json=data)
 
         # Verificar se a solicitação foi bem-sucedida
         if response.status_code == 200:
