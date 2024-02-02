@@ -1,11 +1,8 @@
 from flask import Flask, request, jsonify, render_template, redirect, url_for, render_template_string
-import threading
 from werkzeug.serving import make_server
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-import requests
-import random
-import time
+import requests, json, random, time, redis, threading
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///contatos.db'
@@ -14,7 +11,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-# Variáveis globais para controle de estado
 respostas_ativas = False
 
 
@@ -34,13 +30,17 @@ class Config(db.Model):
     msg_sent = db.Column(db.Integer, default=1)
     msg_group = db.Column(db.Integer, default=1)
     msg_old = db.Column(db.String(120), nullable=True)
-    webhook_enabled = db.Column(db.Boolean, default=True)
+    instancia = db.Column(db.String(120), nullable=False)
+    url_api = db.Column(db.String(120), nullable=False)
+    apikey = db.Column(db.String(120), nullable=False)
 
 class Bot(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(120), nullable=False)
     numero = db.Column(db.String(15), unique=True, nullable=False)
 
+
+r = redis.Redis(host='localhost', port=6379, db=0)
 def carregar_frases():
     with open('frases.txt', 'r', encoding='utf-8') as arquivo:
         frases = arquivo.readlines()
@@ -54,27 +54,11 @@ def carregar_bots():
 
 
 def enviar_mensagem(telefone,mensagem):
-    url = 'https://api.chatcoreapi.io/message/sendText/teste3'
-    payload = {
-        "number": telefone,
-        "options": {
-            "delay": 1200,
-            "presence": "composing",
-            "mentions": {
-                "everyOne": True
-            }
-        },
-        "textMessage": {
-            "text": mensagem
-        }
-    }
-    headers = {
-        'accept': 'application/json',
-        'apikey': 'rpvut47ozf9u55nvia3tmi',
-        'Content-Type': 'application/json'
-    }
-    response = requests.post(url, json=payload, headers=headers)
-    return response
+    # Prepara os dados para enfileirar
+    dados = json.dumps({"telefone": telefone, "mensagem": mensagem})
+    
+    # Enfileira a mensagem na lista do Redis
+    r.lpush('fila_de_mensagens', dados)    
 
 @app.route('/control', methods=['GET'])
 def control():
