@@ -83,8 +83,6 @@ def control():
         bots = carregar_bots()
         for bot in bots:
             enviar_mensagem(bot, "olá, tudo bem?")  # Substituir pela mensagem desejada
-            intervalo = random.randint(1, 27)
-            time.sleep(intervalo)  # Espera um intervalo aleatório entre 1 a 27 segundos
             return jsonify({"status": "Mensagens enviadas com sucesso para todos os bots!"}), 200
         print("Respostas do webhook ativadas por 20 minutos.")
             # Define um temporizador para desativar as respostas após 20 minutos
