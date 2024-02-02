@@ -20,7 +20,7 @@ class Contato(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     numero = db.Column(db.String(80), unique=True, nullable=False)
     nome = db.Column(db.String(120), nullable=False)
-    instancia = db.Column(db.String(120), nullable=False)
+    instancia = db.Column(db.String(120), nullable=True)
 
 class Grupo(db.Model):
     id = db.Column(db.String(120), primary_key=True)
@@ -32,9 +32,9 @@ class Config(db.Model):
     msg_sent = db.Column(db.Integer, default=1)
     msg_group = db.Column(db.Integer, default=1)
     msg_old = db.Column(db.String(120), nullable=True)
-    instancia = db.Column(db.String(120), nullable=False)
-    url_api = db.Column(db.String(120), nullable=False)
-    apikey = db.Column(db.String(120), nullable=False)
+    instancia = db.Column(db.String(120), nullable=True)
+    url_api = db.Column(db.String(120), nullable=True)
+    apikey = db.Column(db.String(120), nullable=True)
 
 class Bot(db.Model):
     id = db.Column(db.Integer, primary_key=True)
