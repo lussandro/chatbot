@@ -80,13 +80,9 @@ def control():
     global respostas_ativas
     if not respostas_ativas:
         respostas_ativas = True
-        bots = carregar_bots()
-        for bot in bots:
-            enviar_mensagem(bot, "olá, tudo bem?")  # Substituir pela mensagem desejada
-            return jsonify({"status": "Mensagens enviadas com sucesso para todos os bots!"}), 200
         print("Respostas do webhook ativadas por 20 minutos.")
-            # Define um temporizador para desativar as respostas após 20 minutos
-        timer = threading.Timer(60, desativar_respostas)
+        # Define um temporizador para desativar as respostas após 20 minutos
+        timer = threading.Timer(1200, desativar_respostas)
         timer.start()
         return "Respostas do webhook ativadas por 20 minutos."
     else:
