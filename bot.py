@@ -32,6 +32,7 @@ class Config(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     msg_count = db.Column(db.Integer, default=0)  
     msg_sent = db.Column(db.Integer, default=1)
+    msg_group = db.Column(db.Integer, default=1)
     msg_old = db.Column(db.String(120), nullable=True)
     webhook_enabled = db.Column(db.Boolean, default=True)
 
@@ -103,7 +104,8 @@ def index():
     config = Config.query.first()
     msg_count = config.msg_count if config else 0
     msg_sent = config.msg_sent if config else 0
-    return render_template('index.html', total_grupos=total_grupos, total_contatos=total_contatos, msg_count=msg_count, total_bots=total_bots, msg_sent=msg_sent)
+    msg_group = config.msg_group if config else 0
+    return render_template('index.html', total_grupos=total_grupos, total_contatos=total_contatos, msg_count=msg_count, total_bots=total_bots, msg_sent=msg_sent, msg_group=msg_group)
 
 @app.route('/iniciar-maturacao', methods=['GET'])
 def iniciar_maturacao():
@@ -182,10 +184,12 @@ def webhook():
             if not config:
                 config = Config(msg_count=1)
                 config = Config(msg_sent=1)
+                config = Config(msg_group = 1)
                 db.session.add(config)
             else:
                 config.msg_count += 1
                 config.msg_sent += 1
+                config.msg_group += 1
             db.session.commit()
 
         # Tratamento de contatos
