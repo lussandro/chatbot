@@ -8,6 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Instale as dependências do Flask (você pode criar um arquivo requirements.txt)
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Exponha a porta que sua aplicação Flask irá utilizar (geralmente 5000)
