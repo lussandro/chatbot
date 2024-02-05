@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  minha-aplicacao:
+    build:
+      context: ./minha-aplicacao
+      dockerfile: Dockerfile
+    ports:
+      - "5000:500"  # Mapeamento de portas se necessário
+    # Outras configurações da sua aplicação
+
+  minha-aplicacao-worker:
+    build:
+      context: ./minha-aplicacao-worker
+      dockerfile: Dockerfile.worker
+    # Outras configurações da sua aplicação worker
