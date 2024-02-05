@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5000:500"  # Mapeamento de portas se necessário
+      - "5000:5000"  # Mapeamento de portas se necessário
     # Outras configurações da sua aplicação
 
   minha-aplicacao-worker:
