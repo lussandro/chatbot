@@ -7,6 +7,7 @@ WORKDIR /app
 # Copie os arquivos de código-fonte da sua aplicação para o contêiner
 COPY . /app
 
+RUN pip install --upgrade pip
 # Instale as dependências do Flask (você pode criar um arquivo requirements.txt)
 RUN pip install -r requirements.txt
 
