@@ -182,8 +182,9 @@ def webhook():
     if respostas_ativas:
         data = request.json
         print(data)
-
-        remote_jid = data['data']['key']['remoteJid'].replace('@s.whatsapp.net', '')
+        phone_number = data['data']['key']['remoteJid']
+        remote_jid = phone_number.split('@')[0]
+        # remote_jid = data['data']['key']['remoteJid'].replace('@s.whatsapp.net', '')
         message = data['data']['message'].get('conversation')
         push_name = data['data']['pushName']
         sender = data['sender'].replace('@s.whatsapp.net', '')
