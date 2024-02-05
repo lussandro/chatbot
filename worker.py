@@ -41,7 +41,7 @@ def processar_e_enviar_mensagens():
         dados = r.brpop('fila_de_mensagens', timeout=0)
         
         if dados:
-            # Converte os dados de volta para um dicionário Python
+            print("Executando a fila")
             mensagem = json.loads(dados[1])
             telefone = mensagem['telefone']
             msg = mensagem['mensagem']
