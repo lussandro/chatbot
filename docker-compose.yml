@@ -14,3 +14,30 @@ services:
       context: .
       dockerfile: Dockerfile.worker
     # Outras configurações da sua aplicação worker
+  maturador2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5002"  # Mapeamento de portas se necessário
+    # Outras configurações da sua aplicação
+
+  worker2:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    # Outras configurações da sua aplicação worker
+  maturador3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5004:5004"  # Mapeamento de portas se necessário
+    # Outras configurações da sua aplicação
+
+  worker3:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    # Outras configurações da sua aplicação worker
+
