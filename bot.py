@@ -57,10 +57,10 @@ def carregar_bots():
 
 
 def enviar_mensagem(telefone,mensagem):
-    # Prepara os dados para enfileirar
+    
     dados = json.dumps({"telefone": telefone, "mensagem": mensagem})
     
-    # Enfileira a mensagem na lista do Redis
+  
     r.lpush('fila_de_mensagens', dados)    
 
 @app.route('/control', methods=['GET'])
@@ -69,7 +69,7 @@ def control():
     if not respostas_ativas:
         respostas_ativas = True
         print("Respostas do webhook ativadas por 20 minutos.")
-        # Define um temporizador para desativar as respostas após 20 minutos
+       
         timer = threading.Timer(1200, desativar_respostas)
         timer.start()
         return "Respostas do webhook ativadas por 20 minutos."
@@ -83,6 +83,7 @@ def reset_thread():
 
 @app.route('/')
 def index():
+    instancia = os.environ.get("INSTANCE_NAME")
     total_grupos = Grupo.query.count()
     total_contatos = Contato.query.count()
     with open('bots.txt', 'r') as arquivo:
@@ -92,7 +93,7 @@ def index():
     msg_count = config.msg_count if config else 0
     msg_sent = config.msg_sent if config else 0
     msg_group = config.msg_group if config else 0
-    return render_template('index.html', total_grupos=total_grupos, total_contatos=total_contatos, msg_count=msg_count, total_bots=total_bots, msg_sent=msg_sent, msg_group=msg_group)
+    return render_template('index.html', total_grupos=total_grupos, total_contatos=total_contatos, msg_count=msg_count, total_bots=total_bots, msg_sent=msg_sent, msg_group=msg_group, instancia=instancia)
 
 @app.route('/iniciar-maturacao', methods=['GET'])
 def iniciar_maturacao():
