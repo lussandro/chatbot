@@ -3,7 +3,7 @@ version: '3'
 services:
   minha-aplicacao:
     build:
-      context: ./minha-aplicacao
+      context: ./chatbot
       dockerfile: Dockerfile
     ports:
       - "5000:500"  # Mapeamento de portas se necessário
@@ -11,6 +11,6 @@ services:
 
   minha-aplicacao-worker:
     build:
-      context: ./minha-aplicacao-worker
+      context: ./chatbot
       dockerfile: Dockerfile.worker
     # Outras configurações da sua aplicação worker
