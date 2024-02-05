@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 instance_name = os.environ.get("INSTANCE_NAME")
 def enviar_mensagem(telefone,mensagem):
-    url = os.environ.get("API_URL") + instance_name
+    url = os.environ.get("API_URL") + '/message/sendText/'+ instance_name
     payload = {
         "number": telefone,
         "options": {
