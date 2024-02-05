@@ -11,7 +11,7 @@ COPY . /app
 RUN pip install -r requirements.txt
 
 # Exponha a porta que sua aplicação Flask irá utilizar (geralmente 5000)
-EXPOSE 5000
+EXPOSE 5001
 
 # Comando para iniciar sua aplicação Flask
-CMD ["python", "bot.py"]
+CMD ["python", "worker.py"]
