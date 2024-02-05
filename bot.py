@@ -232,8 +232,11 @@ def desativar_respostas():
 
 @app.route('/fetch-groups', methods=['GET'])
 def fetch_groups():
-    response = requests.get('https://api.chatcoreapi.io/group/fetchAllGroups/chatwoot?getParticipants=false',
-                            headers={'apikey': '3mntbabbkufosmai26dwlm'})
+    instancia = os.environ.get("INSTANCE_NAME")  # Captura o parâmetro de consulta
+    api_key = os.environ.get("API_KEY")
+    api_url = os.environ.get("API_URL") + '/instance/connect/' + instancia
+    response = requests.get(api_url + '/group/fetchAllGroups/' +instancia + '?getParticipants=false',
+                            headers={'apikey': api_key})
     
     if response.status_code == 200:
         groups = response.json()
