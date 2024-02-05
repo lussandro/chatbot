@@ -43,7 +43,7 @@ class Bot(db.Model):
 
 load_dotenv()
 
-r = redis.Redis(host='localhost', port=6379, db=0)
+r = redis.Redis(host='95.217.10.252', port=6379, db=0)
 def carregar_frases():
     with open('frases.txt', 'r', encoding='utf-8') as arquivo:
         frases = arquivo.readlines()
