@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  minha-aplicacao:
+  maturador:
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,7 +9,7 @@ services:
       - "5000:5000"  # Mapeamento de portas se necessário
     # Outras configurações da sua aplicação
 
-  minha-aplicacao-worker:
+  worker:
     build:
       context: .
       dockerfile: Dockerfile.worker

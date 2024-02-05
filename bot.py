@@ -116,17 +116,20 @@ def obter_qrcode():
     except requests.exceptions.RequestException as e:
         # Trate os erros de requisição como achar necessário
         return render_template('error.html', message=str(e))
-# @app.route('/iniciar-maturacao', methods=['GET'])
-# def iniciar_maturacao():
-#     bots = carregar_bots()
-#     for bot in bots:
-#         enviar_mensagem(bot, "olá, tudo bem?")  # Substituir pela mensagem desejada
-#         intervalo = random.randint(1, 27)
-#         time.sleep(intervalo)  # Espera um intervalo aleatório entre 1 a 27 segundos
-#     return jsonify({"status": "Mensagens enviadas com sucesso para todos os bots!"}), 200
+@app.route('/iniciar-maturacao', methods=['GET'])
+def iniciar_maturacao():
+    bots = carregar_bots()
+    for bot in bots:
+        enviar_mensagem(bot, "olá, tudo bem?")  # Substituir pela mensagem desejada
+        intervalo = random.randint(1, 27)
+        time.sleep(intervalo)  # Espera um intervalo aleatório entre 1 a 27 segundos
+    return jsonify({"status": "Mensagens enviadas com sucesso para todos os bots!"}), 200
 
 @app.route('/update_picture', methods=['POST'])
 def update_picture():
+    instancia = os.environ.get("INSTANCE_NAME")  # Captura o parâmetro de consulta
+    api_key = os.environ.get("API_KEY")
+    api_url = os.environ.get("API_URL") + '/chat/updateProfilePicture/' + instancia
     if request.method == 'POST':
         # Obter a URL da imagem do formulário
         new_picture_url = request.form.get('new_picture_url')
@@ -134,7 +137,7 @@ def update_picture():
         # Configurar os cabeçalhos da solicitação
         headers = {
             'Content-Type': 'application/json',
-            'apikey': '3mntbabbkufosmai26dwlm'
+            'apikey': api_key
         }
 
         # Construir os dados da solicitação
@@ -143,7 +146,7 @@ def update_picture():
         }
 
         # Fazer a chamada PUT para atualizar a imagem do bot
-        response = requests.put('https://api.chatcoreapi.io/chat/updateProfilePicture/teste3', headers=headers, json=data)
+        response = requests.put(api_url, headers=headers, json=data)
 
         # Verificar se a solicitação foi bem-sucedida
         if response.status_code == 200:
