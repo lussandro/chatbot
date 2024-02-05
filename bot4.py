@@ -83,8 +83,8 @@ def reset_thread():
 
 @app.route('/')
 def index():
-    instancia = os.environ.get("INSTANCE_NAME3")
-    apikey = os.environ.get("API_KEY3")
+    instancia = os.environ.get("INSTANCE_NAME")
+    apikey = os.environ.get("API_KEY")
     url = os.environ.get("API_URL")
     total_grupos = Grupo.query.count()
     total_contatos = Contato.query.count()
@@ -100,8 +100,8 @@ def index():
 @app.route('/obter-qrcode')
 #@login_required
 def obter_qrcode():
-    instancia = os.environ.get("INSTANCE_NAME3")  # Captura o parâmetro de consulta
-    api_key = os.environ.get("API_KEY3")
+    instancia = os.environ.get("INSTANCE_NAME")  # Captura o parâmetro de consulta
+    api_key = os.environ.get("API_KEY")
     api_url = os.environ.get("API_URL") + '/instance/connect/' + instancia
     headers = {'apikey': api_key}
     try:
@@ -127,8 +127,8 @@ def iniciar_maturacao():
 
 @app.route('/update_picture', methods=['POST'])
 def update_picture():
-    instancia = os.environ.get("INSTANCE_NAME3")  # Captura o parâmetro de consulta
-    api_key = os.environ.get("API_KEY3")
+    instancia = os.environ.get("INSTANCE_NAME")  # Captura o parâmetro de consulta
+    api_key = os.environ.get("API_KEY")
     api_url = os.environ.get("API_URL") + '/chat/updateProfilePicture/' + instancia
     if request.method == 'POST':
         # Obter a URL da imagem do formulário
@@ -235,8 +235,8 @@ def desativar_respostas():
 
 @app.route('/fetch-groups', methods=['GET'])
 def fetch_groups():
-    instancia = os.environ.get("INSTANCE_NAME3")  # Captura o parâmetro de consulta
-    api_key = os.environ.get("API_KEY3")
+    instancia = os.environ.get("INSTANCE_NAME")  # Captura o parâmetro de consulta
+    api_key = os.environ.get("API_KEY")
     api_url = os.environ.get("API_URL") + '/instance/connect/' + instancia
     response = requests.get(api_url + '/group/fetchAllGroups/' +instancia + '?getParticipants=false',
                             headers={'apikey': api_key})
