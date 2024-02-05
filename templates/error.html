@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Erro - Instância Inexistente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="error-page">
+        <h1 class="error-title">Instância inexistente!</h1>
+        <p class="error-message">
+            Parece que a instância que você está tentando acessar não existe ou não está disponível no momento.
+        </p>
+        <p class="error-instruction">
+            Para adquirir uma nova instância, visite nosso parceiro:
+            <a href="https://chatcoreapi.io" class="error-link">ChatCore API</a>
+        </p>
+        <a href="{{ url_for('configuracoes') }}" class="btn btn-back">Voltar às Configurações</a>
+    </div>
+</body>
+</html>

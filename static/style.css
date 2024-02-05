@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #f7f7f7;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+.sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px;
+}
+
+.main-content {
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 15px;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 30px;
+}
+
+button, .btn, .pedido-acao, .cancelar-acao, .pronto-acao {
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: none;
+    background-color: #17a2b8; /* Azul para todos os botões */
+    color: white;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover, .btn:hover, .pedido-acao:hover, .cancelar-acao:hover, .pronto-acao:hover {
+    background-color: #135a7d;
+}
+
+.pedidos-lista {
+    list-style: none;
+    padding: 0;
+}
+
+.pedido-item {
+    background-color: #f9f9f9;
+    border: 1px solid #e1e1e1;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.pedido-item:hover {
+    background-color: #e1e1e1;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        width: 90%;
+    }
+
+    button, .btn, .pedido-acao, .cancelar-acao, .pronto-acao {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+.configuracoes-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f7f7f7;
+}
+
+.configuracoes-page h1 {
+    margin: 20px 0;
+    color: #333;
+}
+
+.configuracoes-page form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+.configuracoes-page .form-group {
+    margin-bottom: 15px;
+}
+
+.configuracoes-page label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.configuracoes-page input[type="text"],
+.configuracoes-page input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Garante que o padding não adicione largura ao elemento */
+}
+
+.configuracoes-page button {
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: none;
+    background-color: #17a2b8;
+    color: white;
+    margin-top: 10px;
+    cursor: pointer;
+    width: 100%;
+   /* box-sizing: border-box; /* Garante que o padding não adicione largura ao elemento */
+}
+
+.configuracoes-page button:hover {
+    background-color: #135a7d;
+}
+
+.qrcode-page {
+    text-align: center;
+    padding-top: 50px;
+}
+
+.qrcode-title {
+    margin-bottom: 20px;
+}
+
+.qrcode-container {
+    display: inline-block;
+    margin-bottom: 20px;
+    /* Adicione mais estilos conforme necessário */
+}
+
+.qrcode-image {
+    max-width: 100%;
+    height: auto;
+    /* Defina um tamanho fixo ou máximo se necessário */
+}
+
+.qrcode-back {
+    margin-top: 20px;
+}
+
+.btn-back {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.btn-back:hover {
+    background-color: #0056b3;
+}
+
+
+.error-page {
+    text-align: center;
+    padding-top: 50px;
+}
+
+.error-title {
+    color: #d9534f;
+    margin-bottom: 20px;
+}
+
+.error-message {
+    margin-bottom: 10px;
+    color: #6c757d;
+}
+
+.error-instruction {
+    margin-bottom: 20px;
+}
+
+.error-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.error-link:hover {
+    text-decoration: underline;
+}
+
+.btn-back {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.btn-back:hover {
+    background-color: #0056b3;
+}
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}

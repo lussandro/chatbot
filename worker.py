@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 # Carregue as variáveis de ambiente do arquivo .env
 load_dotenv()
 instance_name = os.environ.get("INSTANCE_NAME")
+api_key = os.environ.get("API_KEY")
 def enviar_mensagem(telefone,mensagem):
     url = os.environ.get("API_URL") + '/message/sendText/'+ instance_name
     payload = {
@@ -26,7 +27,7 @@ def enviar_mensagem(telefone,mensagem):
     }
     headers = {
         'accept': 'application/json',
-        'apikey': 'B6D711FCDE4D4FD5936544120E713976',
+        'apikey': api_key,
         'Content-Type': 'application/json'
     }
     response = requests.post(url, json=payload, headers=headers)

@@ -1,0 +1,21 @@
+<!-- qrcode.html -->
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>QR Code</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="qrcode-page">
+        <h1 class="qrcode-title">Conectar com WhatsApp</h1>
+        <div class="qrcode-container">
+            <!-- O QR Code é exibido aqui -->
+            <img src="{{ qrcode_base64 }}" alt="QR Code" class="qrcode-image">
+        </div>
+        <div class="qrcode-back">
+            <a href="{{ url_for('/') }}" class="btn btn-back">Voltar às Configurações</a>
+        </div>
+    </div>
+</body>
+</html>

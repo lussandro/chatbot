@@ -97,14 +97,33 @@ def index():
     msg_group = config.msg_group if config else 0
     return render_template('index.html', total_grupos=total_grupos, total_contatos=total_contatos, msg_count=msg_count, total_bots=total_bots, msg_sent=msg_sent, msg_group=msg_group, instancia=instancia, apikey=apikey, url=url)
 
-@app.route('/iniciar-maturacao', methods=['GET'])
-def iniciar_maturacao():
-    bots = carregar_bots()
-    for bot in bots:
-        enviar_mensagem(bot, "olá, tudo bem?")  # Substituir pela mensagem desejada
-        intervalo = random.randint(1, 27)
-        time.sleep(intervalo)  # Espera um intervalo aleatório entre 1 a 27 segundos
-    return jsonify({"status": "Mensagens enviadas com sucesso para todos os bots!"}), 200
+@app.route('/obter-qrcode')
+#@login_required
+def obter_qrcode():
+    instancia = os.environ.get("INSTANCE_NAME")  # Captura o parâmetro de consulta
+    api_key = os.environ.get("API_KEY")
+    api_url = os.environ.get("INSTANCE_NAME") + '/instance/connect/' + instancia
+    headers = {'apikey': api_key}
+    try:
+        response = requests.get(api_url, headers=headers, timeout=10)
+        response.raise_for_status()  # Irá lançar um erro HTTPError se o status não for 200
+        data = response.json()
+        qrcode_base64 = data.get('base64')
+        if qrcode_base64:
+            return render_template('qrcode.html', qrcode_base64=qrcode_base64)
+        else:
+            return render_template('error.html', message="Não foi possível obter o QR Code.")
+    except requests.exceptions.RequestException as e:
+        # Trate os erros de requisição como achar necessário
+        return render_template('error.html', message=str(e))
+# @app.route('/iniciar-maturacao', methods=['GET'])
+# def iniciar_maturacao():
+#     bots = carregar_bots()
+#     for bot in bots:
+#         enviar_mensagem(bot, "olá, tudo bem?")  # Substituir pela mensagem desejada
+#         intervalo = random.randint(1, 27)
+#         time.sleep(intervalo)  # Espera um intervalo aleatório entre 1 a 27 segundos
+#     return jsonify({"status": "Mensagens enviadas com sucesso para todos os bots!"}), 200
 
 @app.route('/update_picture', methods=['POST'])
 def update_picture():
