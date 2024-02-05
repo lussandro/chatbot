@@ -45,7 +45,7 @@ services:
       context: .
       dockerfile: Dockerfile4
     ports:
-      - "5006:5004"  # Mapeamento de portas se necessário
+      - "5006:5006"  # Mapeamento de portas se necessário
     # Outras configurações da sua aplicação
 
   worker4:
