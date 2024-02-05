@@ -32,7 +32,7 @@ def enviar_mensagem(telefone,mensagem):
     response = requests.post(url, json=payload, headers=headers)
     return response
 
-r = redis.Redis(host='localhost', port=6379, db=0)
+r = redis.Redis(host='95.217.10.252', port=6379, db=0)
 
 
 def processar_e_enviar_mensagens():
