@@ -72,9 +72,9 @@ def control():
        
         timer = threading.Timer(1200, desativar_respostas)
         timer.start()
-        return "Respostas do webhook ativadas por 20 minutos."
+        return render_template('maturacao.html')
     else:
-        return "Respostas do webhook já estão ativas."
+        return render_template('maturacao.html')
 
 
 def reset_thread():

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Erro - Instância Inexistente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="error-page">
+        <h1 class="error-title">Maturação Iniciada!</h1>
+        <p>
+            Aguarde! Por 20 minutos aproximadamente o maturador vai ficar respondendo mensagens em periodos de tempo aleatório.
+        </p>
+
+        <a href="{{ url_for('/) }}" class="btn btn-back">Voltar às Configurações</a>
+    </div>
+</body>
+</html>
