@@ -102,7 +102,7 @@ def index():
 def obter_qrcode():
     instancia = os.environ.get("INSTANCE_NAME")  # Captura o parâmetro de consulta
     api_key = os.environ.get("API_KEY")
-    api_url = os.environ.get("INSTANCE_NAME") + '/instance/connect/' + instancia
+    api_url = os.environ.get("API_URL") + '/instance/connect/' + instancia
     headers = {'apikey': api_key}
     try:
         response = requests.get(api_url, headers=headers, timeout=10)
